@@ -203,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mnuSettings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.mnuAbout:
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
             default:
                 return false;
         }
