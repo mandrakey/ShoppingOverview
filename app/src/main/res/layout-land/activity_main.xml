@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="580dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginEnd="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/recent_purchases"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spDisplayCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnPreviousDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&lt;&lt;"/>
+            <TextView
+                android:id="@+id/tvCurrentMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="5dp"/>
+            <TextView
+                android:id="@+id/tvCurrentYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="20dp"/>
+            <Button
+                android:id="@+id/btnNextDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&gt;&gt;"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lvDisplayItems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:text="@string/all_time"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:text="@string/last_month"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:text="@string/current_month"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTotalStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvPrevMonthStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvMonthStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/add_purchase"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="2"
+            android:columnCount="2"
+            android:padding="10dp">
+
+            <TextView
+                android:text="@string/category"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="5dp"/>
+            <Spinner
+                android:id="@+id/spAddCategory"
+                android:layout_gravity="fill"/>
+
+            <TextView
+                android:text="@string/source"
+                android:layout_gravity="fill_vertical"
+                android:gravity="center_vertical"/>
+            <Spinner
+                android:id="@+id/spSource"
+                android:layout_gravity="fill"/>
+        </GridLayout>
+
+        <com.github.mandrakey.shoppingoverview.widgets.PurchaseTextView
+            android:id="@+id/tvAddPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textSize="28sp"
+            android:background="@android:color/white"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="4"
+            android:columnCount="4">
+
+            <Button android:text="7"
+                    android:tag="7"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+            <Button android:text="8"
+                    android:tag="8"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed" />
+            <Button android:text="9"
+                    android:tag="9"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+            <ImageButton
+                    android:src="@android:drawable/ic_input_delete"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"
+                    android:tag="delete" />
+            <Button android:text="4"
+                    android:tag="4"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+            <Button android:text="5"
+                    android:tag="5"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed" />
+            <Button android:text="6"
+                    android:tag="6"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed" />
+            <Button android:text="C"
+                    android:tag="C"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed" />
+            <Button android:text="1"
+                    android:tag="1"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+            <Button android:text="2"
+                    android:tag="2"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+            <Button android:text="3"
+                    android:tag="3"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+            <Button android:text="@string/OK"
+                    android:tag="OK"
+                    android:layout_rowSpan="2"
+                    android:layout_gravity="fill_vertical"
+                    android:onClick="calculatorButtonPressed" />
+            <Button
+                    android:text="0"
+                    android:tag="0"
+                    android:layout_columnSpan="2"
+                    android:layout_gravity="fill"
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed" />
+            <Button android:text=","
+                    android:tag=","
+                    android:layout_width="85dp"
+                    android:layout_height="60dp"
+                    android:onClick="calculatorButtonPressed"/>
+        </GridLayout>
+
+    </LinearLayout>
+</LinearLayout>

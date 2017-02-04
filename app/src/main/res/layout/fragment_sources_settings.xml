@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/holo_green_light"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:text="@string/sources"/>
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:visibility="gone"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_toStartOf="@+id/btnEdit"
+            android:layout_marginEnd="10dp"
+            android:src="@android:drawable/ic_menu_delete"
+            android:background="@android:color/holo_green_light" />
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:visibility="gone"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_toStartOf="@+id/btnAdd"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:background="@android:color/holo_green_light" />
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:src="@android:drawable/ic_menu_add"
+            android:background="@android:color/holo_green_light"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

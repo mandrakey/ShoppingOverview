@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShoppingOverview</string>
+    <string name="save">Speichern</string>
+    <string name="abort">Abbrechen</string>
+    <string name="price_format">€ %.2f</string>
+    <string name="stats_format">€ %1$.2f (€ %2$.2f)</string>
+
+    <string name="recent_purchases">Einkäufe</string>
+    <string name="add_purchase">Einkauf hinzufügen</string>
+    <string name="OK">OK</string>
+    <string name=".">,</string>
+
+    <string name="settings">Einstellungen</string>
+    <string name="sources">Quellen</string>
+    <string name="source">Quelle</string>
+    <string name="click_on_the_image_to_change_it">Bild zum Ändern berühren</string>
+    <string name="add_source">Quelle hinzufügen</string>
+    <string name="edit_source">Quelle bearbeiten</string>
+    <string name="please_enter_a_source_name">Bitte geben Sie der Quelle einen Namen</string>
+    <string name="categories">Kategorien</string>
+    <string name="category">Kategorie</string>
+    <string name="category_name">Kategoriename</string>
+    <string name="add_category">Kategorie hinzufügen</string>
+    <string name="edit_category">Kategorie bearbeiten</string>
+    <string name="please_enter_a_category">Bitte geben Sie eine Kategorie ein</string>
+    <string name="all_time">Alle</string>
+    <string name="last_month">Letzter Monat</string>
+    <string name="current_month">Aktueller Monat</string>
+
+    <string-array name="months">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>März</item>
+        <item>April</item>
+        <item>Mai</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>Dezember</item>
+    </string-array>
+</resources>
