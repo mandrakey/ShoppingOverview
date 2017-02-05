@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                 pla.setMonth(m);
                 pla.refresh();
+                refreshStats();
 
                 String[] months = getResources().getStringArray(R.array.months);
                 tvCurrentMonth.setText(months[m]);
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
                 pla.setMonth(m);
                 pla.refresh();
+                refreshStats();
 
                 String[] months = getResources().getStringArray(R.array.months);
                 tvCurrentMonth.setText(months[m]);
