@@ -41,7 +41,6 @@ public class PurchaseTextView extends TextView {
 
     public PurchaseTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
     }
 
     public PurchaseTextView(Context context) {
@@ -79,6 +78,14 @@ public class PurchaseTextView extends TextView {
         curIndex = 0;
         decimalsStart = -1;
         setText(new String(content));
+    }
+
+    public void setTextEx(CharSequence text) {
+        String t = text.toString().replace("\0", "").replace(',', '.');
+        setText(t);
+        content = t.toCharArray();
+        curIndex = t.length();
+        decimalsStart = t.indexOf('.');
     }
 
     @Override

@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 (Category)spDisplayCategory.getSelectedItem());
         lvDisplayItems.setAdapter(pla);
 
-        tvAddPrice.setText("");
+        tvAddPrice.setTextEx("");
 
         String[] months = getResources().getStringArray(R.array.months);
         tvCurrentMonth.setText(months[pla.getMonth()]);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedDisplayItem = new Pair<>(i, view);
                 view.setBackgroundColor(Color.LTGRAY);
 
-                tvAddPrice.setText(String.format("%.2f", p.sum));
+                tvAddPrice.setTextEx(String.format("%.2f", p.sum));
 
                 CategorySpinnerAdapter csa = (CategorySpinnerAdapter)spAddCategory
                         .getAdapter();
