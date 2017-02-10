@@ -83,6 +83,6 @@ public class PurchaseTextView extends TextView {
 
     @Override
     public CharSequence getText() {
-        return super.getText().toString().replace("\0", "");
+        return super.getText().toString().replace("\0", "").replace(",", ".");
     }
 }
