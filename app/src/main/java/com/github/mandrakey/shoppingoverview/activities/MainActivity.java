@@ -253,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
 
         pla.setCategory(cat.getId() == -1 ? null : cat);
         pla.refresh();
+        refreshStats();
 
         if (selectedDisplayItem != null) {
             selectedDisplayItem.second.setBackgroundColor(Color.TRANSPARENT);
@@ -265,8 +266,14 @@ public class MainActivity extends AppCompatActivity {
         Database db = new Database(this);
         PurchaseListAdapter pla = (PurchaseListAdapter)lvDisplayItems.getAdapter();
 
-        Map<String, Double> allTime = db.getPurchaseDataTotal();
-        Map<String, Double> current = db.getPurchaseDataForMonth(pla.getMonth(), pla.getYear());
+        Category currentCategory = pla.getCategory();
+        Integer categoryId = currentCategory != null
+                ? currentCategory.getId()
+                : null;
+
+        Map<String, Double> allTime = db.getPurchaseDataTotal(categoryId);
+        Map<String, Double> current = db.getPurchaseDataForMonth(pla.getMonth(),
+                pla.getYear(), categoryId);
 
         int lastmonth = pla.getMonth() - 1;
         int lastyear = pla.getYear();
@@ -274,7 +281,8 @@ public class MainActivity extends AppCompatActivity {
             lastmonth = 11;
             --lastyear;
         }
-        Map<String, Double> previous = db.getPurchaseDataForMonth(lastmonth, lastyear);
+        Map<String, Double> previous = db.getPurchaseDataForMonth(lastmonth,
+                lastyear, categoryId);
 
         tvTotalStats.setText(getString(R.string.stats_format,
                 allTime.get("sum"), allTime.get("avg")));

@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -340,10 +341,16 @@ public class Database extends SQLiteOpenHelper implements Closeable {
     }
 
     public Map<String, Double> getPurchaseDataTotal() {
+        return getPurchaseDataTotal(null);
+    }
+
+    public Map<String, Double> getPurchaseDataTotal(Integer categoryId) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(TABLE_PURCHASES,
                 new String[]{"sum(sum), avg(sum)"},
-                null, null, null, null, null);
+                ((categoryId != null) ? "category_id=?" : null),
+                ((categoryId != null) ? new String[]{Integer.toString(categoryId)} : null),
+                null, null, null);
 
         double sum = -1, avg = -1;
         if (c.moveToFirst()) {
@@ -361,11 +368,25 @@ public class Database extends SQLiteOpenHelper implements Closeable {
     }
 
     public Map<String, Double> getPurchaseDataForMonth(int month, int year) {
+        return getPurchaseDataForMonth(month, year, null);
+    }
+
+    public Map<String, Double> getPurchaseDataForMonth(int month, int year,
+                                                       Integer categoryId) {
         SQLiteDatabase db = getReadableDatabase();
+
+        String where = "month = ? AND year = ?" +
+                ((categoryId != null) ? " AND category_id = ?" : "");
+
+        List<String> whereArgs = new ArrayList<>(Arrays.asList(Integer.toString(month),
+                Integer.toString(year)));
+        if (categoryId != null) {
+            whereArgs.add(Integer.toString(categoryId));
+        }
+
         Cursor c = db.query(TABLE_PURCHASES,
                 new String[]{"sum(sum), avg(sum)"},
-                "month = ? AND year = ?",
-                new String[]{Integer.toString(month), Integer.toString(year)},
+                where, whereArgs.toArray(new String[0]),
                 null, null, null);
 
         double sum = -1, avg = -1;
