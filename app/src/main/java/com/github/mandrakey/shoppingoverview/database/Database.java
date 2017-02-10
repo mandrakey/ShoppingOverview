@@ -352,8 +352,8 @@ public class Database extends SQLiteOpenHelper implements Closeable {
         }
 
         Map<String, Double> res = new HashMap<>(2);
-        res.put("sum", c.getDouble(0));
-        res.put("avg", c.getDouble(1));
+        res.put("sum", sum);
+        res.put("avg", avg);
 
         c.close();
         db.close();
@@ -375,8 +375,8 @@ public class Database extends SQLiteOpenHelper implements Closeable {
         }
 
         Map<String, Double> res = new HashMap<>(2);
-        res.put("sum", c.getDouble(0));
-        res.put("avg", c.getDouble(1));
+        res.put("sum", sum);
+        res.put("avg", avg);
 
         c.close();
         db.close();
