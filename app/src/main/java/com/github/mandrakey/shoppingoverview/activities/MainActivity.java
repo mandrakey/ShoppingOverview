@@ -222,6 +222,10 @@ public class MainActivity extends AppCompatActivity {
         if ("C".equals(tag)) {
             tvAddPrice.empty();
         } else if ("OK".equals(tag)) {
+            if (tvAddPrice.getText().toString().isEmpty()) {
+                return;
+            }
+
             double sum = Double.parseDouble(tvAddPrice.getText().toString());
             Category cat = (Category)spAddCategory.getSelectedItem();
             Source s = (Source)spSource.getSelectedItem();
