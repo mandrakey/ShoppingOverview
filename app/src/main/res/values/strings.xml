@@ -11,6 +11,8 @@
     <string name="OK">OK</string>
     <string name=".">,</string>
     <string name="about">About</string>
+    <string name="digit_could_not_be_removed">Digit could not be removed: $1%s</string>
+    <string name="digit_could_not_be_added">Digit could not be added: $1%s</string>
 
     <string name="settings">Settings</string>
     <string name="sources">Sources</string>

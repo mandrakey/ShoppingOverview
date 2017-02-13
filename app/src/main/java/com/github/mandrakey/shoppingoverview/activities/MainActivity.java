@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mandrakey.shoppingoverview.R;
 import com.github.mandrakey.shoppingoverview.adapters.CategorySpinnerAdapter;
@@ -241,9 +242,21 @@ public class MainActivity extends AppCompatActivity {
             refreshStats();
             tvAddPrice.empty();
         } else if ("delete".equals(tag)) {
-            tvAddPrice.remove();
+            try {
+                tvAddPrice.remove();
+            } catch (Exception ex) {
+                Toast.makeText(this,
+                        getResources().getString(R.string.digit_could_not_be_removed, ex.getMessage()),
+                        Toast.LENGTH_LONG).show();
+            }
         } else {
-            tvAddPrice.add(tag.charAt(0));
+            try {
+                tvAddPrice.add(tag.charAt(0));
+            } catch (Exception ex) {
+                Toast.makeText(this,
+                        getResources().getString(R.string.digit_could_not_be_added, ex.getMessage()),
+                        Toast.LENGTH_LONG).show();
+            }
         }
     }
 
