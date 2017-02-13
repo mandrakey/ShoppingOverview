@@ -237,6 +237,9 @@ public class MainActivity extends AppCompatActivity {
                 selectedDisplayItem = null;
             }
 
+            CategorySpinnerAdapter csa = (CategorySpinnerAdapter)spDisplayCategory.getAdapter();
+            spDisplayCategory.setSelection(csa.getPosition(cat));
+
             db.close();
             ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
             refreshStats();
