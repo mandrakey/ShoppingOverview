@@ -11,8 +11,8 @@
     <string name="OK">OK</string>
     <string name=".">,</string>
     <string name="about">Informationen</string>
-    <string name="digit_could_not_be_removed">Zahl konnte nicht entfernt werden: $1%s</string>
-    <string name="digit_could_not_be_added">Zahl konnte nicht hinzugefügt werden: $1%s</string>
+    <string name="digit_could_not_be_removed">Zahl konnte nicht entfernt werden: %1$s</string>
+    <string name="digit_could_not_be_added">Zahl konnte nicht hinzugefügt werden: %1$s</string>
 
     <string name="settings">Einstellungen</string>
     <string name="sources">Quellen</string>
