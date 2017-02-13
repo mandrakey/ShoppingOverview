@@ -31,7 +31,9 @@ import android.widget.TextView;
 
 public class PurchaseTextView extends TextView {
 
-    protected char content[] = new char[20];
+    protected static final int TEXT_LENGTH = 20;
+
+    protected char content[] = new char[TEXT_LENGTH];
     protected int curIndex = 0;
     protected int decimalsStart = -1;
 
@@ -83,7 +85,7 @@ public class PurchaseTextView extends TextView {
     public void setTextEx(CharSequence text) {
         String t = text.toString().replace("\0", "").replace(',', '.');
         setText(t);
-        content = t.toCharArray();
+        setContent(text);
         curIndex = t.length();
         decimalsStart = t.indexOf('.');
     }
@@ -91,5 +93,16 @@ public class PurchaseTextView extends TextView {
     @Override
     public CharSequence getText() {
         return super.getText().toString().replace("\0", "").replace(",", ".");
+    }
+
+    private void setContent(CharSequence text) {
+        if (text.length() > TEXT_LENGTH) {
+            throw new IllegalArgumentException("Text may not exceed " +
+                    TEXT_LENGTH + " characters");
+        }
+
+        for (int i = 0; i < TEXT_LENGTH; ++i) {
+            content[i] = i < text.length() ? text.charAt(i) : '\0';
+        }
     }
 }
