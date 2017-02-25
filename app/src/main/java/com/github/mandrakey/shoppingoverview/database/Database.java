@@ -340,6 +340,19 @@ public class Database extends SQLiteOpenHelper implements Closeable {
         db.close();
     }
 
+    public void deletePurchase(Purchase p) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] where = new String[]{
+                Integer.toString(p.getCategory().getId()),
+                Integer.toString(p.getSource().getId()),
+                Long.toString(p.datetime.getTime())
+        };
+        db.delete(TABLE_PURCHASES,
+                "category_id=? AND source_id=? AND datetime=?", where);
+        db.close();
+    }
+
     public Map<String, Double> getPurchaseDataTotal() {
         return getPurchaseDataTotal(null);
     }

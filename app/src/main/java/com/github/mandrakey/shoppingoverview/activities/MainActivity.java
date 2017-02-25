@@ -50,6 +50,7 @@ import com.github.mandrakey.shoppingoverview.adapters.CategorySpinnerAdapter;
 import com.github.mandrakey.shoppingoverview.adapters.PurchaseListAdapter;
 import com.github.mandrakey.shoppingoverview.adapters.SourceSpinnerAdapter;
 import com.github.mandrakey.shoppingoverview.database.Database;
+import com.github.mandrakey.shoppingoverview.dialogues.DeletePurchaseDialogue;
 import com.github.mandrakey.shoppingoverview.model.Category;
 import com.github.mandrakey.shoppingoverview.model.Purchase;
 import com.github.mandrakey.shoppingoverview.model.Source;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String ACTION_EDIT_PURCHASE = "edit_purchase";
     public static final String ACTION_DELETE_PURCHASE = "delete_purchase";
+    public static final String ACTION_REFRESH_PURCHASES = "refresh_purchases";
     public static final String EXTRA_PURCHASE_POSITION = "purchase_id";
 
     private Spinner spDisplayCategory;
@@ -199,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         lbIntentFilter = new IntentFilter();
         lbIntentFilter.addAction(ACTION_DELETE_PURCHASE);
         lbIntentFilter.addAction(ACTION_EDIT_PURCHASE);
+        lbIntentFilter.addAction(ACTION_REFRESH_PURCHASES);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -228,10 +231,13 @@ public class MainActivity extends AppCompatActivity {
                     int pos = intent.getIntExtra(EXTRA_PURCHASE_POSITION, -1);
                     Purchase p = (Purchase)lvDisplayItems.getAdapter().getItem(pos);
 
-                    Toast.makeText(
-                            MainActivity.this,
-                            "Delete purchase: " + p.sum,
-                            Toast.LENGTH_SHORT).show();
+                    new DeletePurchaseDialogue(MainActivity.this, p).show();
+                    return;
+                }
+
+                if (ACTION_REFRESH_PURCHASES.equals(intent.getAction())) {
+                    ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
+                    refreshStats();
                 }
             }
         };
@@ -310,8 +316,8 @@ public class MainActivity extends AppCompatActivity {
             spDisplayCategory.setSelection(csa.getPosition(cat));
 
             db.close();
-            ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
-            refreshStats();
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(new Intent(ACTION_REFRESH_PURCHASES));
             tvAddPrice.empty();
         } else if ("delete".equals(tag)) {
             try {
