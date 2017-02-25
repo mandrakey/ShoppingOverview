@@ -90,34 +90,33 @@ public class PurchaseListAdapter extends ArrayAdapter<Purchase> {
             viewholder.btnDelete = (ImageButton)convertView.findViewById(R.id.btnDelete);
             convertView.setTag(viewholder);
             convertView.setOnTouchListener(new PurchaseListItemTouchListener());
-
-            viewholder.btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.ACTION_EDIT_PURCHASE);
-                    i.putExtra(MainActivity.EXTRA_PURCHASE_POSITION, position);
-                    LocalBroadcastManager.getInstance(view.getContext())
-                            .sendBroadcast(i);
-
-                    hideEditButtons(viewholder);
-                }
-            });
-            viewholder.btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(MainActivity.ACTION_DELETE_PURCHASE);
-                    i.putExtra(MainActivity.EXTRA_PURCHASE_POSITION, position);
-                    LocalBroadcastManager.getInstance(view.getContext())
-                            .sendBroadcast(i);
-
-                    hideEditButtons(viewholder);
-                }
-            });
-
         } else {
             viewholder = (PurchaseListItemViewholder)convertView.getTag();
             hideEditButtons(viewholder);
         }
+
+        viewholder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.ACTION_EDIT_PURCHASE);
+                i.putExtra(MainActivity.EXTRA_PURCHASE_POSITION, position);
+                LocalBroadcastManager.getInstance(view.getContext())
+                        .sendBroadcast(i);
+
+                hideEditButtons(viewholder);
+            }
+        });
+        viewholder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.ACTION_DELETE_PURCHASE);
+                i.putExtra(MainActivity.EXTRA_PURCHASE_POSITION, position);
+                LocalBroadcastManager.getInstance(view.getContext())
+                        .sendBroadcast(i);
+
+                hideEditButtons(viewholder);
+            }
+        });
 
         if (p != null) {
             viewholder.icon.setImageBitmap(p.getSource().image);
