@@ -32,7 +32,7 @@ import com.github.mandrakey.shoppingoverview.database.Database;
 
 import java.util.Date;
 
-public class Purchase {
+public class Purchase implements Cloneable {
 
     protected int categoryId;
     protected int sourceId;
@@ -62,6 +62,20 @@ public class Purchase {
         context = ctx;
     }
 
+    @Override
+    public Purchase clone() throws CloneNotSupportedException {
+        Purchase p = (Purchase)super.clone();
+        p.context = context;
+        p.categoryId = categoryId;
+        p.sourceId = sourceId;
+        p.datetime = (Date)datetime.clone();
+        p.month = month;
+        p.year = year;
+        p.sum = sum;
+
+        return p;
+    }
+
     public Category getCategory()
     {
         if (category == null) {
@@ -72,6 +86,15 @@ public class Purchase {
         return category;
     }
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int id) {
+        categoryId = id;
+        category = null;
+    }
+
     public Source getSource() {
         if (source == null) {
             Database db = new Database(context);
@@ -79,6 +102,15 @@ public class Purchase {
             db.close();
         }
         return source;
+    }
+
+    public int getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(int id) {
+        sourceId = id;
+        source = null;
     }
 
 }

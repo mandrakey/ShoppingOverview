@@ -51,6 +51,7 @@ import com.github.mandrakey.shoppingoverview.adapters.PurchaseListAdapter;
 import com.github.mandrakey.shoppingoverview.adapters.SourceSpinnerAdapter;
 import com.github.mandrakey.shoppingoverview.database.Database;
 import com.github.mandrakey.shoppingoverview.dialogues.DeletePurchaseDialogue;
+import com.github.mandrakey.shoppingoverview.dialogues.EditPurchaseDialogue;
 import com.github.mandrakey.shoppingoverview.model.Category;
 import com.github.mandrakey.shoppingoverview.model.Purchase;
 import com.github.mandrakey.shoppingoverview.model.Source;
@@ -167,11 +168,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 pla.setMonth(m);
-                pla.refresh();
-                refreshStats();
-
                 String[] months = getResources().getStringArray(R.array.months);
                 tvCurrentMonth.setText(months[m]);
+                refreshPurchases();
             }
         });
 
@@ -187,11 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 pla.setMonth(m);
-                pla.refresh();
-                refreshStats();
-
                 String[] months = getResources().getStringArray(R.array.months);
                 tvCurrentMonth.setText(months[m]);
+
+                refreshPurchases();
             }
         });
 
@@ -215,10 +213,9 @@ public class MainActivity extends AppCompatActivity {
                     int pos = intent.getIntExtra(EXTRA_PURCHASE_POSITION, -1);
                     Purchase p = (Purchase)lvDisplayItems.getAdapter().getItem(pos);
 
-                    Toast.makeText(
-                            MainActivity.this,
-                            "Edit purchase: " + p.sum,
-                            Toast.LENGTH_SHORT).show();
+                    EditPurchaseDialogue dialogue = new EditPurchaseDialogue();
+                    dialogue.setPurchase(p);
+                    dialogue.show(getSupportFragmentManager(), "editpdialog");
                     return;
                 }
 
@@ -236,8 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (ACTION_REFRESH_PURCHASES.equals(intent.getAction())) {
-                    ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
-                    refreshStats();
+                    refreshPurchases();
                 }
             }
         };
@@ -351,6 +347,11 @@ public class MainActivity extends AppCompatActivity {
             selectedDisplayItem = null;
             tvAddPrice.empty();
         }
+    }
+
+    private void refreshPurchases() {
+        ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
+        refreshStats();
     }
 
     private void refreshStats() {

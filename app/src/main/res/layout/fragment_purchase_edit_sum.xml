@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <com.github.mandrakey.shoppingoverview.widgets.PurchaseTextView
+        android:id="@+id/tvSum"
+        android:layout_width="335dp"
+        android:layout_height="wrap_content"
+        android:height="30dp"
+        android:background="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
+        android:text="25.56"/>
+
+    <fragment
+        android:id="@+id/keypad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="com.github.mandrakey.shoppingoverview.fragments.KeypadFragment"
+        tools:layout="@layout/fragment_keypad"/>
+
+</LinearLayout>

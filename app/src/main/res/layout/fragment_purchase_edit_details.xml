@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/category"/>
+    <Spinner
+        android:id="@+id/spCategory"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_toEndOf="@id/tvCategory"/>
+
+    <TextView
+        android:id="@+id/tvSource"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@id/tvCategory"
+        android:layout_marginEnd="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/source"/>
+    <Spinner
+        android:id="@+id/spSource"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_below="@id/spCategory"
+        android:layout_toEndOf="@id/tvCategory"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spSource"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <DatePicker
+            android:id="@+id/dpDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:spinnersShown="true"
+            android:calendarViewShown="false"/>
+        <TimePicker
+            android:id="@+id/tpTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>
