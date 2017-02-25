@@ -25,10 +25,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.github.mandrakey.shoppingoverview.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +59,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String ACTION_EDIT_PURCHASE = "edit_purchase";
+    public static final String ACTION_DELETE_PURCHASE = "delete_purchase";
+    public static final String EXTRA_PURCHASE_POSITION = "purchase_id";
+
     private Spinner spDisplayCategory;
     private Button btnPreviousDate;
     private TextView tvCurrentMonth;
@@ -68,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvMonthStats;
 
     private Pair<Integer, View> selectedDisplayItem;
+    private BroadcastReceiver receiver;
+    private IntentFilter lbIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,17 +192,71 @@ public class MainActivity extends AppCompatActivity {
                 tvCurrentMonth.setText(months[m]);
             }
         });
+
+        //----------------------------------------------------------------------
+        // LocalBroadcast receiver
+
+        lbIntentFilter = new IntentFilter();
+        lbIntentFilter.addAction(ACTION_DELETE_PURCHASE);
+        lbIntentFilter.addAction(ACTION_EDIT_PURCHASE);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (ACTION_EDIT_PURCHASE.equals(intent.getAction())) {
+                    if (!intent.hasExtra(EXTRA_PURCHASE_POSITION)) {
+                        Log.w("MainActivity", "Cannot edit purchase without id");
+                        return;
+                    }
+
+                    int pos = intent.getIntExtra(EXTRA_PURCHASE_POSITION, -1);
+                    Purchase p = (Purchase)lvDisplayItems.getAdapter().getItem(pos);
+
+                    Toast.makeText(
+                            MainActivity.this,
+                            "Edit purchase: " + p.sum,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (ACTION_DELETE_PURCHASE.equals(intent.getAction())) {
+                    if (!intent.hasExtra(EXTRA_PURCHASE_POSITION)) {
+                        Log.w("MainActivity", "Cannot delete purchase without id");
+                        return;
+                    }
+
+                    int pos = intent.getIntExtra(EXTRA_PURCHASE_POSITION, -1);
+                    Purchase p = (Purchase)lvDisplayItems.getAdapter().getItem(pos);
+
+                    Toast.makeText(
+                            MainActivity.this,
+                            "Delete purchase: " + p.sum,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(receiver, lbIntentFilter);
+
         ((SourceSpinnerAdapter)spSource.getAdapter()).refresh();
         ((CategorySpinnerAdapter)spAddCategory.getAdapter()).refresh();
         ((CategorySpinnerAdapter)spDisplayCategory.getAdapter()).refresh();
         ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
         refreshStats();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(receiver);
     }
 
     @Override

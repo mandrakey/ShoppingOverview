@@ -26,8 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.github.mandrakey.shoppingoverview.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mandrakey.shoppingoverview.R;
+import com.github.mandrakey.shoppingoverview.activities.MainActivity;
 import com.github.mandrakey.shoppingoverview.database.Database;
 import com.github.mandrakey.shoppingoverview.model.Category;
 import com.github.mandrakey.shoppingoverview.model.Purchase;
@@ -92,14 +94,22 @@ public class PurchaseListAdapter extends ArrayAdapter<Purchase> {
             viewholder.btnEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("PurchaseListAdapter", "Edit purchase : " + position);
+                    Intent i = new Intent(MainActivity.ACTION_EDIT_PURCHASE);
+                    i.putExtra(MainActivity.EXTRA_PURCHASE_POSITION, position);
+                    LocalBroadcastManager.getInstance(view.getContext())
+                            .sendBroadcast(i);
+
                     hideEditButtons(viewholder);
                 }
             });
             viewholder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("PurchaseListAdapter", "Delete purchase: " + position);
+                    Intent i = new Intent(MainActivity.ACTION_DELETE_PURCHASE);
+                    i.putExtra(MainActivity.EXTRA_PURCHASE_POSITION, position);
+                    LocalBroadcastManager.getInstance(view.getContext())
+                            .sendBroadcast(i);
+
                     hideEditButtons(viewholder);
                 }
             });
