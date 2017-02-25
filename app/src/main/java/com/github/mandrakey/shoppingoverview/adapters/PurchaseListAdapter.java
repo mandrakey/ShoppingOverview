@@ -27,11 +27,14 @@ package com.github.mandrakey.shoppingoverview.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mandrakey.shoppingoverview.R;
@@ -39,6 +42,7 @@ import com.github.mandrakey.shoppingoverview.database.Database;
 import com.github.mandrakey.shoppingoverview.model.Category;
 import com.github.mandrakey.shoppingoverview.model.Purchase;
 import com.github.mandrakey.shoppingoverview.viewholders.PurchaseListItemViewholder;
+import com.github.mandrakey.shoppingoverview.widgets.PurchaseListItemTouchListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -65,8 +69,8 @@ public class PurchaseListAdapter extends ArrayAdapter<Purchase> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        PurchaseListItemViewholder viewholder;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final PurchaseListItemViewholder viewholder;
         Purchase p = getItem(position);
 
         if (convertView == null) {
@@ -78,9 +82,31 @@ public class PurchaseListAdapter extends ArrayAdapter<Purchase> {
             viewholder.tvSum = (TextView)convertView.findViewById(R.id.tvSum);
             viewholder.tvDateTime = (TextView)convertView.findViewById(R.id.tvDateTime);
             viewholder.tvCategory = (TextView)convertView.findViewById(R.id.tvCategory);
+            viewholder.llEditButtons = (LinearLayout)convertView.findViewById(R.id.llEditButtons);
+            viewholder.tvSwipeHint = (TextView)convertView.findViewById(R.id.tvSwipeHint);
+            viewholder.btnEdit = (ImageButton)convertView.findViewById(R.id.btnEdit);
+            viewholder.btnDelete = (ImageButton)convertView.findViewById(R.id.btnDelete);
             convertView.setTag(viewholder);
+            convertView.setOnTouchListener(new PurchaseListItemTouchListener());
+
+            viewholder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("PurchaseListAdapter", "Edit purchase : " + position);
+                    hideEditButtons(viewholder);
+                }
+            });
+            viewholder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("PurchaseListAdapter", "Delete purchase: " + position);
+                    hideEditButtons(viewholder);
+                }
+            });
+
         } else {
             viewholder = (PurchaseListItemViewholder)convertView.getTag();
+            hideEditButtons(viewholder);
         }
 
         if (p != null) {
@@ -134,5 +160,14 @@ public class PurchaseListAdapter extends ArrayAdapter<Purchase> {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    private void hideEditButtons(PurchaseListItemViewholder vh) {
+        ViewGroup.MarginLayoutParams lp =
+                (ViewGroup.MarginLayoutParams)vh.llEditButtons.getLayoutParams();
+        //noinspection ResourceType
+        lp.setMarginEnd(PurchaseListItemTouchListener.MARGIN_HIDDEN);
+        vh.tvSwipeHint.setVisibility(View.VISIBLE);
+        vh.llEditButtons.setLayoutParams(lp);
     }
 }

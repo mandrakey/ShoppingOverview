@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        lvDisplayItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /* lvDisplayItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (selectedDisplayItem != null) {
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return false;
             }
-        });
+        }); */
 
         btnPreviousDate.setOnClickListener(new View.OnClickListener() {
             @Override

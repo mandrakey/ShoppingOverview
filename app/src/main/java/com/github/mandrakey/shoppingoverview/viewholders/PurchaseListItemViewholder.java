@@ -25,7 +25,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.github.mandrakey.shoppingoverview.viewholders;
 
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class PurchaseListItemViewholder {
@@ -35,5 +37,9 @@ public class PurchaseListItemViewholder {
     public TextView tvSum;
     public TextView tvDateTime;
     public TextView tvCategory;
+    public LinearLayout llEditButtons;
+    public TextView tvSwipeHint;
+    public ImageButton btnEdit;
+    public ImageButton btnDelete;
 
 }
