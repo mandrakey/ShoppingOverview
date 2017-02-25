@@ -110,9 +110,9 @@ public class EditPurchaseDialogue extends DialogFragment {
     }
 
     public void setPurchase(Purchase p) {
-        purchase = p;
         try {
-            oldPurchase = p.clone();
+            purchase = p.clone();
+            oldPurchase = p;
         } catch (CloneNotSupportedException ex) {
             Log.e(TAG, "Failed to store old purchase values: " + ex.getMessage());
             dismiss();
