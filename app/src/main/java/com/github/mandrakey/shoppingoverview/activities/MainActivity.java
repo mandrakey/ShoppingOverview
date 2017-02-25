@@ -25,10 +25,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.github.mandrakey.shoppingoverview.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +50,8 @@ import com.github.mandrakey.shoppingoverview.adapters.CategorySpinnerAdapter;
 import com.github.mandrakey.shoppingoverview.adapters.PurchaseListAdapter;
 import com.github.mandrakey.shoppingoverview.adapters.SourceSpinnerAdapter;
 import com.github.mandrakey.shoppingoverview.database.Database;
+import com.github.mandrakey.shoppingoverview.dialogues.DeletePurchaseDialogue;
+import com.github.mandrakey.shoppingoverview.dialogues.EditPurchaseDialogue;
 import com.github.mandrakey.shoppingoverview.model.Category;
 import com.github.mandrakey.shoppingoverview.model.Purchase;
 import com.github.mandrakey.shoppingoverview.model.Source;
@@ -53,6 +60,11 @@ import com.github.mandrakey.shoppingoverview.widgets.PurchaseTextView;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String ACTION_EDIT_PURCHASE = "edit_purchase";
+    public static final String ACTION_DELETE_PURCHASE = "delete_purchase";
+    public static final String ACTION_REFRESH_PURCHASES = "refresh_purchases";
+    public static final String EXTRA_PURCHASE_POSITION = "purchase_id";
 
     private Spinner spDisplayCategory;
     private Button btnPreviousDate;
@@ -68,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvMonthStats;
 
     private Pair<Integer, View> selectedDisplayItem;
+    private BroadcastReceiver receiver;
+    private IntentFilter lbIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        lvDisplayItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /* lvDisplayItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (selectedDisplayItem != null) {
@@ -140,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return false;
             }
-        });
+        }); */
 
         btnPreviousDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,11 +168,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 pla.setMonth(m);
-                pla.refresh();
-                refreshStats();
-
                 String[] months = getResources().getStringArray(R.array.months);
                 tvCurrentMonth.setText(months[m]);
+                refreshPurchases();
             }
         });
 
@@ -174,24 +186,79 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 pla.setMonth(m);
-                pla.refresh();
-                refreshStats();
-
                 String[] months = getResources().getStringArray(R.array.months);
                 tvCurrentMonth.setText(months[m]);
+
+                refreshPurchases();
             }
         });
+
+        //----------------------------------------------------------------------
+        // LocalBroadcast receiver
+
+        lbIntentFilter = new IntentFilter();
+        lbIntentFilter.addAction(ACTION_DELETE_PURCHASE);
+        lbIntentFilter.addAction(ACTION_EDIT_PURCHASE);
+        lbIntentFilter.addAction(ACTION_REFRESH_PURCHASES);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (ACTION_EDIT_PURCHASE.equals(intent.getAction())) {
+                    if (!intent.hasExtra(EXTRA_PURCHASE_POSITION)) {
+                        Log.w("MainActivity", "Cannot edit purchase without id");
+                        return;
+                    }
+
+                    int pos = intent.getIntExtra(EXTRA_PURCHASE_POSITION, -1);
+                    Purchase p = (Purchase)lvDisplayItems.getAdapter().getItem(pos);
+
+                    EditPurchaseDialogue dialogue = new EditPurchaseDialogue();
+                    dialogue.setPurchase(p);
+                    dialogue.show(getSupportFragmentManager(), "editpdialog");
+                    return;
+                }
+
+                if (ACTION_DELETE_PURCHASE.equals(intent.getAction())) {
+                    if (!intent.hasExtra(EXTRA_PURCHASE_POSITION)) {
+                        Log.w("MainActivity", "Cannot delete purchase without id");
+                        return;
+                    }
+
+                    int pos = intent.getIntExtra(EXTRA_PURCHASE_POSITION, -1);
+                    Purchase p = (Purchase)lvDisplayItems.getAdapter().getItem(pos);
+
+                    new DeletePurchaseDialogue(MainActivity.this, p).show();
+                    return;
+                }
+
+                if (ACTION_REFRESH_PURCHASES.equals(intent.getAction())) {
+                    refreshPurchases();
+                }
+            }
+        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(receiver, lbIntentFilter);
+
         ((SourceSpinnerAdapter)spSource.getAdapter()).refresh();
         ((CategorySpinnerAdapter)spAddCategory.getAdapter()).refresh();
         ((CategorySpinnerAdapter)spDisplayCategory.getAdapter()).refresh();
         ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
         refreshStats();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(receiver);
     }
 
     @Override
@@ -245,8 +312,8 @@ public class MainActivity extends AppCompatActivity {
             spDisplayCategory.setSelection(csa.getPosition(cat));
 
             db.close();
-            ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
-            refreshStats();
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(new Intent(ACTION_REFRESH_PURCHASES));
             tvAddPrice.empty();
         } else if ("delete".equals(tag)) {
             try {
@@ -280,6 +347,11 @@ public class MainActivity extends AppCompatActivity {
             selectedDisplayItem = null;
             tvAddPrice.empty();
         }
+    }
+
+    private void refreshPurchases() {
+        ((PurchaseListAdapter)lvDisplayItems.getAdapter()).refresh();
+        refreshStats();
     }
 
     private void refreshStats() {

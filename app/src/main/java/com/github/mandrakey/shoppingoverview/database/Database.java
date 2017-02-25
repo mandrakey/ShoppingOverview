@@ -31,7 +31,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.util.Pair;
 
 import com.github.mandrakey.shoppingoverview.model.Category;
 import com.github.mandrakey.shoppingoverview.model.Purchase;
@@ -39,14 +38,12 @@ import com.github.mandrakey.shoppingoverview.model.Source;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -323,10 +320,21 @@ public class Database extends SQLiteOpenHelper implements Closeable {
     public void updatePurchase(Purchase p, int categoryId, int sourceId,
                                double sum) {
 
+        updatePurchase(p, categoryId, sourceId, sum, p.datetime);
+    }
+
+    public void updatePurchase(Purchase p, int categoryId, int sourceId, double sum,
+                               Date datetime) {
         ContentValues cv = new ContentValues();
         cv.put("category_id", categoryId);
         cv.put("source_id", sourceId);
         cv.put("sum", sum);
+        cv.put("datetime", datetime.getTime());
+
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(datetime);
+        cv.put("month", cal.get(Calendar.MONTH));
+        cv.put("year", cal.get(Calendar.YEAR));
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -336,6 +344,19 @@ public class Database extends SQLiteOpenHelper implements Closeable {
                 Long.toString(p.datetime.getTime())
         };
         db.update(TABLE_PURCHASES, cv,
+                "category_id=? AND source_id=? AND datetime=?", where);
+        db.close();
+    }
+
+    public void deletePurchase(Purchase p) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] where = new String[]{
+                Integer.toString(p.getCategory().getId()),
+                Integer.toString(p.getSource().getId()),
+                Long.toString(p.datetime.getTime())
+        };
+        db.delete(TABLE_PURCHASES,
                 "category_id=? AND source_id=? AND datetime=?", where);
         db.close();
     }

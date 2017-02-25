@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
@@ -17,7 +18,8 @@
         android:layout_toEndOf="@android:id/icon"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:layout_marginStart="10dp">
+        android:layout_marginStart="10dp"
+        android:padding="0dp">
 
         <TextView
             android:id="@+id/tvSourceName"
@@ -40,22 +42,61 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:orientation="vertical"
-        android:layout_marginEnd="10dp">
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textAlignment="textEnd"
+                android:text="24.12.2016 16:32:16"/>
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textAlignment="textEnd"
+                android:text="Essen"/>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvDateTime"
-            android:layout_width="match_parent"
+            android:id="@+id/tvSwipeHint"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textAlignment="textEnd"
-            android:text="24.12.2016 16:32:16"/>
-        <TextView
-            android:id="@+id/tvCategory"
-            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/lightGrey"
+            android:text="&lt;"/>
+
+        <LinearLayout
+            android:id="@+id/llEditButtons"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textAlignment="textEnd"
-            android:text="Essen"/>
+            android:layout_marginEnd="-75dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit"/>
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_trash"/>
+    </LinearLayout>
+
+
     </LinearLayout>
 </RelativeLayout>

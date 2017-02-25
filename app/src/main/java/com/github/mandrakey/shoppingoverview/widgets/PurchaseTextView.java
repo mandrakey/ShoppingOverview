@@ -68,7 +68,7 @@ public class PurchaseTextView extends TextView {
     public void remove() {
         if (curIndex == 0) return;
 
-        if (decimalsStart == curIndex) {
+        if (decimalsStart == curIndex - 1) {
             decimalsStart = -1;
         }
         content[--curIndex] = '\0';
